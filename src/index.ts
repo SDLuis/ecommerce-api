@@ -10,7 +10,12 @@ Press CTRL-C to stop`)
 db.sequelize
 .authenticate()
 .then(async () => {
-  console.log("database connected");
+  console.log("database connected")
+  try {
+    await db.sequelize.sync({ force: false })
+  } catch (error: any) {
+    console.log(error.message);
+  }
 })
 .catch((e: any) => {
   console.log(e.message);

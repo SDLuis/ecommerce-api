@@ -1,6 +1,8 @@
 import { Dialect } from 'sequelize'
 import { Sequelize } from 'sequelize-typescript'
 import dbConfig from '../config/dbconfig'
+import { userModel } from './users.model'
+import { productModel } from './products.model'
 
 const sequelize = new Sequelize(
   dbConfig.database as string,
@@ -8,6 +10,7 @@ const sequelize = new Sequelize(
   dbConfig.password,
   {
     host: dbConfig.host,
+    models: [productModel, userModel],
     dialect: dbConfig.dialect as Dialect,
     pool: {
       max: dbConfig.pool.max,
@@ -22,5 +25,8 @@ const db = {
   Sequelize,
   sequelize
 }
+
+userModel.hasMany(productModel, { foreignKey: 'User_ID' })
+productModel.belongsTo(userModel, { foreignKey: 'User_ID' })
 
 export default db
