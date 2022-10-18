@@ -7,6 +7,7 @@ import {
   AllowNull,
   Unique
 } from 'sequelize-typescript'
+import { JwtPayload } from 'jsonwebtoken'
 
 export enum role {
   Admin = 'admin',
@@ -25,7 +26,9 @@ export interface login {
   email: string
   password: string
 }
-
+export interface CustomRequest extends Request {
+  token: string | JwtPayload
+}
 export interface IDecoded {
   id: number
   iat: number
@@ -35,6 +38,7 @@ export interface IDecoded {
 export type userEntry = IUser
 export type NotSensistiveInfoUser = Omit<IUser, 'password'>
 export type NewUserEntry = Omit<IUser, 'User_ID' | 'role'>
+export type EditUserEntry = Omit<IUser, 'User_ID'>
 
 @Table({
   tableName: 'user',

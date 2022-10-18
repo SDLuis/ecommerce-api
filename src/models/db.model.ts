@@ -1,6 +1,6 @@
 import { Dialect } from 'sequelize'
 import { Sequelize } from 'sequelize-typescript'
-import dbConfig from '../config/dbconfig'
+import dbConfig from '../config/db.config'
 import { userModel } from './users.model'
 import { productModel } from './products.model'
 

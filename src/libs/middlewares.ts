@@ -1,9 +1,20 @@
 import express from 'express'
+import cors from 'cors'
+import authRoutes from '../routes/auth.route'
+import userRoutes from '../routes/user.route'
 
 const app = express()
 
 app.use(express.json())
+app.use(
+  cors({
+    credentials: true,
+    origin: true
+  })
+)
 
+app.use('/users', userRoutes)
+app.use('/auth', authRoutes)
 app.get('/', (_req, res) => {
   res.status(200).send('WELCOME!!')
 })
