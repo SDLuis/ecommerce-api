@@ -50,3 +50,18 @@ jobs:
         with:
           name: build
           path: build
+
+  deploy:
+    needs: [build]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+        if: ${{ github.event_name == 'push' }}
+      - name: Heroku Review Application
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_APP}}
+          heroku_email: ${{secrets.HEROKU_API_EMAIL}}
