@@ -9,7 +9,7 @@ import {
 
 export enum productType {
   headphone = 'Headphone',
-  wireheadphone = 'Wire Headphone',
+  wiredheadphone = 'Wired Headphone',
   wirelessheadphone = 'Wireless Headphone'
 }
 export interface IProduct {
@@ -24,12 +24,11 @@ export interface IProduct {
   midText: string
   largeText: string
   description: string
-  createdAt: Date
 }
 
 export type productEntry = IProduct
-export type NotSensistiveInfoJobs = Omit<IProduct, 'User_ID'>
-export type NewJobEntry = Omit<IProduct, 'Product_ID'>
+export type NotSensistiveInfoProducts = Omit<IProduct, 'User_ID'>
+export type NewProductEntry = Omit<IProduct, 'Product_ID'>
 
 @Table({
   tableName: 'products',
@@ -82,7 +81,7 @@ export class productModel extends Model implements IProduct {
   @NotEmpty
   @AllowNull(false)
   @Column({
-    type: DataType.STRING(100)
+    type: DataType.STRING(1000)
   })
     img!: string
 
@@ -113,9 +112,4 @@ export class productModel extends Model implements IProduct {
     type: DataType.STRING(1000)
   })
     description!: string
-
-  @Column({
-    type: DataType.DATE
-  })
-    createdAt!: Date
 }
