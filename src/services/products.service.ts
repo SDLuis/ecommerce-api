@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions, @typescript-eslint/no-floating-promises */
 import { Op } from 'sequelize'
 import { userModel } from '../models/users.model'
 import '../models/db.model'
 import { productType, productEntry, productModel, NewProductEntry, NotSensistiveInfoProducts } from '../models/products.model'
 
 export const getProducts = async (): Promise<productEntry[]> => {
-  return productModel.findAll({
+  // eslint-disable-next-line @typescript-eslint/return-await
+  return await productModel.findAll({
     include: { model: userModel, attributes: { exclude: ['password'] } },
     order: [
       ['Product_ID', 'DESC']
@@ -34,11 +36,11 @@ export const getProductsWithoutSensitiveInfo = (products: productEntry[]): NotSe
     }
   )
 }
-export const addProducts = (newProductEntry: NewProductEntry): NewProductEntry => {
+export const addProducts = async (newProductEntry: NewProductEntry): Promise<NewProductEntry> => {
   const newProduct = {
     ...newProductEntry
   }
-  productModel.create(newProduct)
+  await productModel.create(newProduct)
   return newProduct
 }
 

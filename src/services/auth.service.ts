@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions, @typescript-eslint/no-floating-promises */
 import '../models/db.model'
 import bcrypt from 'bcrypt'
 import jsonwebtoken from 'jsonwebtoken'
@@ -14,9 +15,7 @@ export const getUser = (Users: userEntry[]): userEntry[] => {
   return Users
 }
 
-export const addUser = async (
-  newUserEntry: NewUserEntry
-): Promise<NewUserEntry | Error> => {
+export const addUser = async (newUserEntry: NewUserEntry): Promise<NewUserEntry | Error> => {
   try {
     const newUser = {
       First_Name: newUserEntry.First_Name,
@@ -29,7 +28,6 @@ export const addUser = async (
       )
     }
     const user = await userModel.findOne({ where: { email: newUser.email } })
-    /* eslint-disable-next-line */
     if (user) {
       const Error: Error = {
         name: 'Email always exist',
@@ -37,7 +35,7 @@ export const addUser = async (
       }
       return Error
     } else {
-      userModel.create(newUser)
+      await userModel.create(newUser)
       return newUser
     }
   } catch (e: any) {
@@ -52,7 +50,7 @@ export const Login = async (
     const user = await userModel.findOne({
       where: { email: authParams.email }
     })
-    /* eslint-disable-next-line */
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (user) {
       const validPassword = await bcrypt.compare(
         authParams.password.toString(),
@@ -94,7 +92,7 @@ export const auth = async (
       token,
       authConfig.secret
     )) as IDecoded
-    /* eslint-disable-next-line */
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (!decoded) {
       return 'unauthenticated'
     } else {

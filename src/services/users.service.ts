@@ -4,7 +4,7 @@ import '../models/db.model'
 import { userEntry, NotSensistiveInfoUser, EditUserEntry, userModel } from '../models/users.model'
 
 export const getUsers = async (): Promise<userEntry[]> => {
-  return userModel
+  return await userModel
     .findAll()
     .then((result) => {
       return result

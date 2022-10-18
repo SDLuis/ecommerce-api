@@ -8,6 +8,7 @@
     "dev": "ts-node-dev src/index.ts",
     "build": "tsc",
     "lint": "ts-standard",
+    "lint:fix": "ts-standard --fix",
     "reinstall": "rm -rf node_modules && npm i"
   },
   "keywords": [],
