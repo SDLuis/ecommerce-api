@@ -44,8 +44,12 @@ export const buyProduct = async (req: Request, res: Response): Promise<any> => {
   try {
     const id = +req.params.id
     const quantity = parseQuantity(req.body.quantity)
-    await productService.buyProducts(id, quantity)
-    res.status(200).send({ message: 'Successful purchase', status: 200 })
+    const response = await productService.buyProducts(id, quantity)
+    if (response === 1) {
+      res.status(200).send({ message: 'Successful purchase', status: 200 })
+    } else {
+      res.status(200).send({ message: 'Error, Your purchase could not be made', status: 200 })
+    }
   } catch (e: any) {
     res.status(400).send(e.message)
   }
@@ -55,8 +59,12 @@ export const addingQuantityProduct = async (req: Request, res: Response): Promis
   try {
     const id = +req.params.id
     const quantity = parseQuantity(req.body.quantity)
-    await productService.addingQuantityProducts(id, quantity)
-    res.status(200).send({ message: 'Product(s) added', status: 200 })
+    const response = await productService.addingQuantityProducts(id, quantity)
+    if (response === 1) {
+      res.status(200).send({ message: 'Product(s) added', status: 200 })
+    } else {
+      res.status(200).send({ message: 'Error, Product(s) not added', status: 200 })
+    }
   } catch (e: any) {
     res.status(400).send(e.message)
   }

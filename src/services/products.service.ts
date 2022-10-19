@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions, @typescript-eslint/no-floating-promises */
-import { Op } from 'sequelize'
+import Sequelize, { Op } from 'sequelize'
 import { userModel } from '../models/users.model'
 import '../models/db.model'
 import { productType, productEntry, productModel, NewProductEntry, NotSensistiveInfoProducts, IProductWithoutUserModel } from '../models/products.model'
@@ -55,7 +55,7 @@ export const editProducts = async (id: number, newProductEntry: NewProductEntry)
 }
 
 export const buyProducts = async (id: number, QuantityFromRequest: number): Promise<number> => {
-  const result = await productModel.decrement({ quantity: QuantityFromRequest }, { where: { Product_ID: id } })
+  const result = await productModel.update({ quantity: Sequelize.literal(`quantity - ${QuantityFromRequest}`) }, { where: { Product_ID: id } })
     .then((result) => {
       return result
     })
@@ -63,7 +63,7 @@ export const buyProducts = async (id: number, QuantityFromRequest: number): Prom
 }
 
 export const addingQuantityProducts = async (id: number, QuantityFromRequest: number): Promise<number> => {
-  const result = await productModel.increment({ quantity: QuantityFromRequest }, { where: { Product_ID: id } })
+  const result = await productModel.update({ quantity: Sequelize.literal(`quantity + ${QuantityFromRequest}`) }, { where: { Product_ID: id } })
     .then((result) => {
       return result
     })
