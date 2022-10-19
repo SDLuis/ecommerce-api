@@ -31,7 +31,7 @@ export interface IProduct {
 
 export type productEntry = IProduct
 export type NotSensistiveInfoProducts = Omit<IProduct, 'User_ID' | 'userModel'>
-export type NewProductEntry = Omit<IProduct, 'Product_ID' | 'userModel'>
+export type NewProductEntry = Omit<IProduct, 'Product_ID' | 'userModel' | 'createdAt' | 'updatedAt'>
 export type IProductWithoutUserModel = Omit<IProduct, 'userModel'>
 
 @Table({
