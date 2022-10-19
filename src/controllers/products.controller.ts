@@ -16,7 +16,7 @@ export const getProducts = async (_req: Request, res: Response): Promise<any> =>
 
 export const newProduct = async (req: Request, res: Response): Promise<any> => {
   try {
-    const NewProductEntry = productValidation.toNewProduct(req.body, 2 /* (req as any).token.User_ID */)
+    const NewProductEntry = productValidation.toNewProduct(req.body, (req as any).token.User_ID)
     const addedProduct = await productService.addProducts(NewProductEntry)
     res.status(200).send(addedProduct)
   } catch (e: any) {
@@ -27,7 +27,7 @@ export const newProduct = async (req: Request, res: Response): Promise<any> => {
 export const editProduct = async (req: Request, res: Response): Promise<any> => {
   try {
     const id = +req.params.id
-    const paramToEdit = productValidation.toNewProduct(req.body, 1)
+    const paramToEdit = productValidation.toNewProduct(req.body, (req as any).token.User_ID)
     const Product = await productService.editProducts(id, paramToEdit)
     if (+Product === 1) {
       res.status(200).send({ message: 'Product Edit', status: 200 })
@@ -85,10 +85,10 @@ export const reqProduct = async (req: Request, res: Response, next: NextFunction
   }
 }
 
-export const ownProducts = async (_req: Request, res: Response): Promise<any> => {
+export const ownProducts = async (req: Request, res: Response): Promise<any> => {
   try {
-    // const id = (req as any).token.User_ID
-    const Product = (await productService.ownProducts(2)) as any
+    const id = (req as any).token.User_ID
+    const Product = (await productService.ownProducts(id)) as any
     res.status(200).send(Product)
   } catch (e: any) {
     res.status(400).send(e.message)
