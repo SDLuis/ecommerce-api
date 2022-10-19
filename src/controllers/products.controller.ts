@@ -3,6 +3,7 @@ import * as productService from '../services/products.service'
 import { productEntry, productType } from '../models/products.model'
 import * as productValidation from '../validations/products.validation'
 import { CustomRequest } from '../models/users.model'
+import { parseQuantity } from '../validations/products.validation'
 
 export const getProducts = async (_req: Request, res: Response): Promise<any> => {
   try {
@@ -34,6 +35,28 @@ export const editProduct = async (req: Request, res: Response): Promise<any> => 
     } else {
       res.status(200).send({ message: 'Error, Product was not edited', status: 400 })
     }
+  } catch (e: any) {
+    res.status(400).send(e.message)
+  }
+}
+
+export const buyProduct = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const id = +req.params.id
+    const quantity = parseQuantity(req.body.quantity)
+    await productService.buyProducts(id, quantity)
+    res.status(200).send({ message: 'Successful purchase', status: 200 })
+  } catch (e: any) {
+    res.status(400).send(e.message)
+  }
+}
+
+export const addingQuantityProduct = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const id = +req.params.id
+    const quantity = parseQuantity(req.body.quantity)
+    await productService.addingQuantityProducts(id, quantity)
+    res.status(200).send({ message: 'Product(s) added', status: 200 })
   } catch (e: any) {
     res.status(400).send(e.message)
   }

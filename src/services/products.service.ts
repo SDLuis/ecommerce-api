@@ -54,6 +54,22 @@ export const editProducts = async (id: number, newProductEntry: NewProductEntry)
   return +result
 }
 
+export const buyProducts = async (id: number, QuantityFromRequest: number): Promise<number> => {
+  const result = await productModel.decrement({ quantity: QuantityFromRequest }, { where: { Product_ID: id } })
+    .then((result) => {
+      return result
+    })
+  return +result
+}
+
+export const addingQuantityProducts = async (id: number, QuantityFromRequest: number): Promise<number> => {
+  const result = await productModel.increment({ quantity: QuantityFromRequest }, { where: { Product_ID: id } })
+    .then((result) => {
+      return result
+    })
+  return +result
+}
+
 export const findProduct = (id: number): Promise<productEntry[]> | undefined => {
   return productModel.findOne({ where: { Product_ID: id } }) as any
 }

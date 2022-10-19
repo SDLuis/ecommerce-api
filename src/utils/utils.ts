@@ -13,6 +13,10 @@ export const isNumber = (number: number): boolean => {
   return typeof number === 'number'
 }
 
+export const isBoolean = (param: any): boolean => {
+  return typeof param === 'boolean'
+}
+
 export const isProductType = (param: any): boolean => {
   return Object.values(productType).includes(param)
 }

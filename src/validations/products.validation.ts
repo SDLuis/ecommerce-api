@@ -28,7 +28,7 @@ const parsePrice = (priceFromRequest: any): number => {
   return priceFromRequest
 }
 
-const parseQuantity = (QuantityFromRequest: any): number => {
+export const parseQuantity = (QuantityFromRequest: any): number => {
   if (!isNumber(QuantityFromRequest) || notEmpty(QuantityFromRequest)) {
     throw new Error('Invalid Quantity')
   }
