@@ -2,9 +2,9 @@
 import { Op } from 'sequelize'
 import { userModel } from '../models/users.model'
 import '../models/db.model'
-import { productType, productEntry, productModel, NewProductEntry, NotSensistiveInfoProducts } from '../models/products.model'
+import { productType, productEntry, productModel, NewProductEntry, NotSensistiveInfoProducts, IProductWithoutUserModel } from '../models/products.model'
 
-export const getProducts = async (): Promise<productEntry[]> => {
+export const getProducts = async (): Promise<IProductWithoutUserModel[]> => {
   // eslint-disable-next-line @typescript-eslint/return-await
   return await productModel.findAll({
     include: { model: userModel, attributes: { exclude: ['password'] } },
@@ -19,7 +19,7 @@ export const getProducts = async (): Promise<productEntry[]> => {
 export const getProductsWithoutSensitiveInfo = (products: productEntry[]): NotSensistiveInfoProducts[] => {
   return products.map(
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    ({ Product_ID, Product_Name, Product_Type, User_ID, price, quantity, img, smallText, midText, largeText, description }) => {
+    ({ Product_ID, Product_Name, Product_Type, User_ID, price, quantity, img, smallText, midText, largeText, description, createdAt, updatedAt }) => {
       return {
         Product_ID,
         Product_Name,
@@ -31,7 +31,9 @@ export const getProductsWithoutSensitiveInfo = (products: productEntry[]): NotSe
         smallText,
         midText,
         largeText,
-        description
+        description,
+        createdAt,
+        updatedAt
       }
     }
   )
@@ -40,8 +42,8 @@ export const addProducts = async (newProductEntry: NewProductEntry): Promise<New
   const newProduct = {
     ...newProductEntry
   }
-  await productModel.create(newProduct)
-  return newProduct
+  const products = await productModel.create(newProduct)
+  return products
 }
 
 export const editProducts = async (id: number, newProductEntry: NewProductEntry): Promise<number> => {
@@ -68,7 +70,7 @@ export const ownProducts = (id: number): Promise<productEntry[]> | undefined => 
   return productModel.findAll({ where: { User_ID: id }, order: [['Product_ID', 'DESC']] }) as any
 }
 
-export const searchProduts = (ProductName: string): Promise<productEntry[]> | undefined => {
+export const searchProduts = (ProductName: string): Promise<IProductWithoutUserModel[]> | undefined => {
   return productModel.findAll({
     where: { Product_Name: { [Op.like]: '%' + ProductName + '%' } }, order: [['Product_ID', 'DESC']]
   })

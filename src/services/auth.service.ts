@@ -88,7 +88,7 @@ export const auth = async (
   token: string
 ): Promise<NotSensistiveInfoUser | string | undefined> => {
   try {
-    const decoded = (await jsonwebtoken.verify(
+    const decoded = (jsonwebtoken.verify(
       token,
       authConfig.secret
     )) as IDecoded

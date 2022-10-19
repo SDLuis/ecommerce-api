@@ -24,18 +24,22 @@ export interface IProduct {
   midText: string
   largeText: string
   description: string
+  createdAt: Date
+  updatedAt: Date
+  userModel: object
 }
 
 export type productEntry = IProduct
-export type NotSensistiveInfoProducts = Omit<IProduct, 'User_ID'>
-export type NewProductEntry = Omit<IProduct, 'Product_ID'>
+export type NotSensistiveInfoProducts = Omit<IProduct, 'User_ID' | 'userModel'>
+export type NewProductEntry = Omit<IProduct, 'Product_ID' | 'userModel'>
+export type IProductWithoutUserModel = Omit<IProduct, 'userModel'>
 
 @Table({
   tableName: 'products',
   timestamps: true
 })
 
-export class productModel extends Model implements IProduct {
+export class productModel extends Model implements IProductWithoutUserModel {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
@@ -112,4 +116,14 @@ export class productModel extends Model implements IProduct {
     type: DataType.STRING(1000)
   })
     description!: string
+
+  @Column({
+    type: DataType.DATE
+  })
+    createdAt!: Date
+
+  @Column({
+    type: DataType.DATE
+  })
+    updatedAt!: Date
 }

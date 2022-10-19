@@ -25,7 +25,7 @@ export const editUser = async (id: number, editUserEntry: EditUserEntry): Promis
   const editUser = {
     First_Name: editUserEntry.First_Name,
     Last_Name: editUserEntry.Last_Name,
-    role: 'client',
+    role: editUserEntry.role,
     email: editUserEntry.email,
     password: await bcrypt.hash(
       editUserEntry.password.toString(),

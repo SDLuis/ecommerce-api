@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express'
 import * as productService from '../services/products.service'
-import { productType } from '../models/products.model'
+import { productEntry, productType } from '../models/products.model'
 import * as productValidation from '../validations/products.validation'
 import { CustomRequest } from '../models/users.model'
 
 export const getProducts = async (_req: Request, res: Response): Promise<any> => {
   try {
     await productService.getProducts().then((response) => {
-      res.status(200).send(productService.getProductsWithoutSensitiveInfo(response))
+      res.status(200).send(productService.getProductsWithoutSensitiveInfo(response as productEntry[]))
     })
   } catch (e: any) {
     res.status(400).send(e.message)
@@ -17,7 +17,7 @@ export const getProducts = async (_req: Request, res: Response): Promise<any> =>
 export const newProduct = async (req: Request, res: Response): Promise<any> => {
   try {
     const NewProductEntry = productValidation.toNewProduct(req.body, 2 /* (req as any).token.User_ID */)
-    const addedProduct = productService.addProducts(NewProductEntry)
+    const addedProduct = await productService.addProducts(NewProductEntry)
     res.status(200).send(addedProduct)
   } catch (e: any) {
     res.status(400).send(e.message)
