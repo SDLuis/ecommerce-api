@@ -75,7 +75,7 @@ jobs:
       - run: npm run test:e2e
 
   deploy:
-    needs: [build]
+    needs: [build, test]
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
