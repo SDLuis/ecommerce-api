@@ -36,6 +36,15 @@ export const findUser = async (req: Request, res: Response): Promise<any> => {
     res.status(400).send(e.message)
   }
 }
+export const findUserByEmail = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const email = req.params.email
+    const user = await userService.findUserByEmail(email)
+    res.status(200).send(user)
+  } catch (e: any) {
+    res.status(400).send(e.message)
+  }
+}
 
 export const deleteUser = async (req: Request, res: Response): Promise<any> => {
   try {

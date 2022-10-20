@@ -5,7 +5,11 @@ import { userEntry, NotSensistiveInfoUser, EditUserEntry, userModel } from '../m
 
 export const getUsers = async (): Promise<userEntry[]> => {
   return await userModel
-    .findAll()
+    .findAll({
+      order: [
+        ['User_ID', 'DESC']
+      ]
+    })
     .then((result) => {
       return result
     })
@@ -40,6 +44,9 @@ export const editUser = async (id: number, editUserEntry: EditUserEntry): Promis
 
 export const findUser = (id: number): Promise<userEntry[]> | undefined => {
   return userModel.findOne({ where: { User_ID: id } }) as any
+}
+export const findUserByEmail = (email: string): Promise<userEntry[]> | undefined => {
+  return userModel.findOne({ where: { email: email } }) as any
 }
 
 export const deleteUser = (id: number): Promise<number> | undefined => {

@@ -22,7 +22,7 @@ const parseRole = (RoleFromRequest: any): role => {
   return RoleFromRequest
 }
 
-const parseEmail = (emailFromRequest: any): string => {
+export const parseEmail = (emailFromRequest: any): string => {
   if (!isString(emailFromRequest) || notEmpty(emailFromRequest)) {
     throw new Error('Invalid Email')
   }
