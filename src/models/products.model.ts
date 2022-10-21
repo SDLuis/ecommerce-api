@@ -20,6 +20,7 @@ export interface IProduct {
   price: number
   quantity: number
   img: string
+  img_ID: string
   smallText: string
   midText: string
   largeText: string
@@ -88,6 +89,13 @@ export class productModel extends Model implements IProductWithoutUserModel {
     type: DataType.STRING(1000)
   })
     img!: string
+
+  @NotEmpty
+  @AllowNull(false)
+  @Column({
+    type: DataType.STRING(1000)
+  })
+    img_ID!: string
 
   @NotEmpty
   @AllowNull(false)

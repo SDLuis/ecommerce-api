@@ -6,7 +6,6 @@ import path from 'path'
 const storage = multer.diskStorage({
   destination: path.join('./public/attachments'),
   filename: (_req, file, cb) => {
-    console.log(file)
     cb(null, v4() + path.extname(file.originalname))
   }
 })

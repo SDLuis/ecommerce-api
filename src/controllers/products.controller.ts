@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { NextFunction, Request, Response } from 'express'
@@ -6,6 +8,8 @@ import { productEntry, productType } from '../models/products.model'
 import * as productValidation from '../validations/products.validation'
 import { CustomRequest } from '../models/users.model'
 import { parseQuantity } from '../validations/products.validation'
+import { v2 as cloudinary } from 'cloudinary'
+import fs from 'fs'
 
 export const getProducts = async (_req: Request, res: Response): Promise<any> => {
   try {
@@ -19,18 +23,25 @@ export const getProducts = async (_req: Request, res: Response): Promise<any> =>
 
 export const newProduct = async (req: Request, res: Response): Promise<any> => {
   try {
+    const { secure_url, public_id } = await cloudinary.uploader.upload(req.file?.path as string)
+    fs.unlink(req.file?.path as string, function (err) {
+      if (err) {
+        console.log(err)
+      }
+    })
     const body = {
       Product_Name: req.body.Product_Name,
       Product_Type: req.body.Product_Type,
       price: parseInt(req.body.price),
       quantity: parseInt(req.body.quantity),
-      img: `https://sdl-ecommerce-api.herokuapp.com/attachments/${req.file?.filename}`,
+      img: secure_url,
+      img_ID: public_id,
       smallText: req.body.smallText,
       midText: req.body.midText,
       largeText: req.body.largeText,
       description: req.body.description
     }
-    const NewProductEntry = productValidation.toNewProduct(body, (req as any).token.User_ID)
+    const NewProductEntry = productValidation.toNewProduct(body, 1)
     const addedProduct = await productService.addProducts(NewProductEntry)
     res.status(200).send(addedProduct)
   } catch (e: any) {
@@ -41,18 +52,27 @@ export const newProduct = async (req: Request, res: Response): Promise<any> => {
 export const editProduct = async (req: Request, res: Response): Promise<any> => {
   try {
     const id = +req.params.id
+    const { secure_url, public_id } = await cloudinary.uploader.upload(req.file?.path as string)
+    fs.unlink(req.file?.path as string, function (err) {
+      if (err) {
+        console.log(err)
+      }
+    })
     const body = {
       Product_Name: req.body.Product_Name,
       Product_Type: req.body.Product_Type,
       price: parseInt(req.body.price),
       quantity: parseInt(req.body.quantity),
-      img: `https://sdl-ecommerce-api.herokuapp.com/attachments/${req.file?.filename}`,
+      img: secure_url,
+      img_ID: public_id,
       smallText: req.body.smallText,
       midText: req.body.midText,
       largeText: req.body.largeText,
       description: req.body.description
     }
-    const paramToEdit = productValidation.toNewProduct(body, (req as any).token.User_ID)
+    const { img_ID } = await productService.findProduct(id) as any
+    img_ID ? await cloudinary.uploader.destroy(img_ID as string) : ''
+    const paramToEdit = productValidation.toNewProduct(body, 1)
     const Product = await productService.editProducts(id, paramToEdit)
     if (+Product === 1) {
       res.status(200).send({ message: 'Product Edit', status: 200 })
@@ -117,6 +137,8 @@ export const findProductByProductType = async (req: Request, res: Response): Pro
 export const deleteProduct = async (req: Request, res: Response): Promise<any> => {
   try {
     const id = +req.params.id
+    const { img_ID } = await productService.findProduct(id) as any
+    img_ID ? await cloudinary.uploader.destroy(img_ID as string) : ''
     await productService.deleteProducts(id)?.then((result) => {
       if (result === 1) {
         res.status(200).send('Product deleted')

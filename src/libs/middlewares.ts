@@ -4,6 +4,13 @@ import authRoutes from '../routes/auth.route'
 import userRoutes from '../routes/user.route'
 import productRoutes from '../routes/products.route'
 import cookieparser from 'cookie-parser'
+import { v2 as cloudinary } from 'cloudinary'
+
+cloudinary.config({
+  cloud_name: 'dw9esmd56',
+  api_key: '815338661929234',
+  api_secret: 'bx5L7NxpAxw2jvnlJ0nSVdLx_eE'
+})
 
 const app = express()
 

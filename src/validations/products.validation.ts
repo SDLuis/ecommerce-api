@@ -77,6 +77,7 @@ export const toNewProduct = (object: any, userIdFromRequest: any): NewProductEnt
     price: parsePrice(object.price),
     quantity: parseQuantity(object.quantity),
     img: parseImg(object.img),
+    img_ID: parseImg(object.img_ID),
     smallText: parseSmallText(object.smallText),
     midText: parseMidText(object.midText),
     largeText: parseLargeText(object.largeText),

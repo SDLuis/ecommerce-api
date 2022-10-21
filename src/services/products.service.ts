@@ -19,7 +19,7 @@ export const getProducts = async (): Promise<IProductWithoutUserModel[]> => {
 export const getProductsWithoutSensitiveInfo = (products: productEntry[]): NotSensistiveInfoProducts[] => {
   return products.map(
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    ({ Product_ID, Product_Name, Product_Type, User_ID, price, quantity, img, smallText, midText, largeText, description, createdAt, updatedAt }) => {
+    ({ Product_ID, Product_Name, Product_Type, User_ID, price, quantity, img, img_ID, smallText, midText, largeText, description, createdAt, updatedAt }) => {
       return {
         Product_ID,
         Product_Name,
@@ -28,6 +28,7 @@ export const getProductsWithoutSensitiveInfo = (products: productEntry[]): NotSe
         price,
         quantity,
         img,
+        img_ID,
         smallText,
         midText,
         largeText,
