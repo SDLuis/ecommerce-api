@@ -41,7 +41,18 @@ export const newProduct = async (req: Request, res: Response): Promise<any> => {
 export const editProduct = async (req: Request, res: Response): Promise<any> => {
   try {
     const id = +req.params.id
-    const paramToEdit = productValidation.toNewProduct(req.body, (req as any).token.User_ID)
+    const body = {
+      Product_Name: req.body.Product_Name,
+      Product_Type: req.body.Product_Type,
+      price: parseInt(req.body.price),
+      quantity: parseInt(req.body.quantity),
+      img: `https://sdl-ecommerce-api.herokuapp.com/attachments/${req.file?.filename}`,
+      smallText: req.body.smallText,
+      midText: req.body.midText,
+      largeText: req.body.largeText,
+      description: req.body.description
+    }
+    const paramToEdit = productValidation.toNewProduct(body, (req as any).token.User_ID)
     const Product = await productService.editProducts(id, paramToEdit)
     if (+Product === 1) {
       res.status(200).send({ message: 'Product Edit', status: 200 })
