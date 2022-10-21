@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { test, expect } from '@playwright/test'
+import fs from 'fs'
+import path from 'path'
 
 let context: any
 
@@ -97,13 +99,25 @@ test.describe('need auth', () => {
   test('Add Product', async ({ request }) => {
     const productName: string = 'Beats Electron by Playwright'
     const productType: string = 'Wireless Headphone'
+
+    const file = path.join(__dirname, '../public/attachments', 'logo.webp')
+    const image = fs.readFileSync(file)
     await request.post('http://localhost:5000/products/add', {
-      data: {
+      headers: {
+        Accept: '*/*',
+        ContentType: 'multipart/form-data'
+      },
+      multipart: {
+        image: {
+          name: file,
+          mimeType: 'image/webp',
+          buffer: image
+        },
         Product_Name: productName,
         Product_Type: productType,
         price: 8000,
         quantity: 50,
-        img: 'https://maasaablog.com/wp-content/upload/2022/09/typescript.jpg',
+        img_ID: 'typescript',
         smallText: 'Amazing',
         midText: 'Best design',
         largeText: 'U can not find another product like this',
@@ -129,14 +143,25 @@ test.describe('need auth', () => {
     expect(products.ok()).toBeTruthy()
     const getProducts = JSON.parse(await products.text())
     const ID = getProducts[0].Product_ID
+    const file = path.join(__dirname, '../public/attachments', 'logo.webp')
+    const image = fs.readFileSync(file)
 
     await request.put(`http://localhost:5000/products/edit/${ID}`, {
-      data: {
+      headers: {
+        Accept: '*/*',
+        ContentType: 'multipart/form-data'
+      },
+      multipart: {
+        image: {
+          name: file,
+          mimeType: 'image/webp',
+          buffer: image
+        },
         Product_Name: productNameToEdit,
         Product_Type: productType,
         price: 8000,
         quantity: 50,
-        img: 'https://maasaablog.com/wp-content/upload/2022/09/typescript.jpg',
+        img_ID: 'typescript',
         smallText: 'Amazing',
         midText: 'Best design',
         largeText: 'U can not find another product like this',
