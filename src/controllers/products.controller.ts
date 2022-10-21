@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { NextFunction, Request, Response } from 'express'
 import * as productService from '../services/products.service'
 import { productEntry, productType } from '../models/products.model'
@@ -17,7 +19,18 @@ export const getProducts = async (_req: Request, res: Response): Promise<any> =>
 
 export const newProduct = async (req: Request, res: Response): Promise<any> => {
   try {
-    const NewProductEntry = productValidation.toNewProduct(req.body, (req as any).token.User_ID)
+    const body = {
+      Product_Name: req.body.Product_Name,
+      Product_Type: req.body.Product_Type,
+      price: parseInt(req.body.price),
+      quantity: parseInt(req.body.quantity),
+      img: `https://sdl-ecommerce-api.herokuapp.com/attachments/${req.file?.filename}`,
+      smallText: req.body.smallText,
+      midText: req.body.midText,
+      largeText: req.body.largeText,
+      description: req.body.description
+    }
+    const NewProductEntry = productValidation.toNewProduct(body, (req as any).token.User_ID)
     const addedProduct = await productService.addProducts(NewProductEntry)
     res.status(200).send(addedProduct)
   } catch (e: any) {
