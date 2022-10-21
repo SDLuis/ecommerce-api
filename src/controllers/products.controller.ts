@@ -41,7 +41,7 @@ export const newProduct = async (req: Request, res: Response): Promise<any> => {
       largeText: req.body.largeText,
       description: req.body.description
     }
-    const NewProductEntry = productValidation.toNewProduct(body, 1)
+    const NewProductEntry = productValidation.toNewProduct(body, (req as any).token.User_ID)
     const addedProduct = await productService.addProducts(NewProductEntry)
     res.status(200).send(addedProduct)
   } catch (e: any) {
@@ -72,7 +72,7 @@ export const editProduct = async (req: Request, res: Response): Promise<any> => 
     }
     const { img_ID } = await productService.findProduct(id) as any
     img_ID ? await cloudinary.uploader.destroy(img_ID as string) : ''
-    const paramToEdit = productValidation.toNewProduct(body, 1)
+    const paramToEdit = productValidation.toNewProduct(body, (req as any).token.User_ID)
     const Product = await productService.editProducts(id, paramToEdit)
     if (+Product === 1) {
       res.status(200).send({ message: 'Product Edit', status: 200 })
