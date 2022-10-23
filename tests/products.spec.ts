@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { test, expect } from '@playwright/test'
 import fs from 'fs'
 import path from 'path'
@@ -142,7 +141,7 @@ test.describe('need auth', () => {
 
     expect(products.ok()).toBeTruthy()
     const getProducts = JSON.parse(await products.text())
-    const ID = getProducts[0].Product_ID
+    const ID: number = getProducts[0].Product_ID
     const file = path.join(__dirname, '../public/attachments', 'logo.webp')
     const image = fs.readFileSync(file)
 
@@ -181,7 +180,7 @@ test.describe('need auth', () => {
 
     expect(products.ok()).toBeTruthy()
     const getProducts = JSON.parse(await products.text())
-    const ID = getProducts[0].Product_ID
+    const ID: number = getProducts[0].Product_ID
 
     const res = await request.delete(`http://localhost:5000/products/delete/${ID}`)
     const status = await res.text()

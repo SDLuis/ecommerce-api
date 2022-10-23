@@ -30,6 +30,15 @@ export const newProduct = async (req: Request, res: Response): Promise<any> => {
     res.status(400).send(e.message)
   }
 }
+export const findProduct = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const id = +req.params.id
+    const Product = await cartService.findProduct(id)
+    res.status(200).send(Product)
+  } catch (e: any) {
+    res.status(400).send(e.message)
+  }
+}
 
 export const buyProduct = async (req: Request, res: Response): Promise<any> => {
   try {
