@@ -3,6 +3,7 @@ import { Sequelize } from 'sequelize-typescript'
 import dbConfig from '../config/db.config'
 import { userModel } from './users.model'
 import { productModel } from './products.model'
+import { cartModel } from './cart.model'
 
 const sequelize = new Sequelize(
   dbConfig.database as string,
@@ -10,7 +11,7 @@ const sequelize = new Sequelize(
   dbConfig.password,
   {
     host: dbConfig.host,
-    models: [productModel, userModel],
+    models: [productModel, userModel, cartModel],
     dialect: dbConfig.dialect as Dialect,
     pool: {
       max: dbConfig.pool.max,
@@ -28,5 +29,9 @@ const db = {
 
 userModel.hasMany(productModel, { foreignKey: 'User_ID' })
 productModel.belongsTo(userModel, { foreignKey: 'User_ID' })
+userModel.hasMany(cartModel, { foreignKey: 'User_ID' })
+cartModel.belongsTo(userModel, { foreignKey: 'User_ID' })
+productModel.hasMany(cartModel, { foreignKey: 'Product_ID' })
+cartModel.belongsTo(productModel, { foreignKey: 'Product_ID' })
 
 export default db

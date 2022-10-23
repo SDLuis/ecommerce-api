@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { NextFunction, Request, Response } from 'express'
 import * as productService from '../services/products.service'
 import { productEntry, productType } from '../models/products.model'
@@ -25,7 +23,7 @@ export const newProduct = async (req: Request, res: Response): Promise<any> => {
   try {
     const { secure_url, public_id } = await cloudinary.uploader.upload(req.file?.path as string)
     fs.unlink(req.file?.path as string, function (err) {
-      if (err) {
+      if (err != null) {
         console.log(err)
       }
     })
@@ -54,7 +52,7 @@ export const editProduct = async (req: Request, res: Response): Promise<any> => 
     const id = +req.params.id
     const { secure_url, public_id } = await cloudinary.uploader.upload(req.file?.path as string)
     fs.unlink(req.file?.path as string, function (err) {
-      if (err) {
+      if (err != null) {
         console.log(err)
       }
     })
@@ -71,7 +69,7 @@ export const editProduct = async (req: Request, res: Response): Promise<any> => 
       description: req.body.description
     }
     const { img_ID } = await productService.findProduct(id) as any
-    img_ID ? await cloudinary.uploader.destroy(img_ID as string) : ''
+    img_ID != null ? await cloudinary.uploader.destroy(img_ID as string) : ''
     const paramToEdit = productValidation.toNewProduct(body, (req as any).token.User_ID)
     const Product = await productService.editProducts(id, paramToEdit)
     if (+Product === 1) {
@@ -138,7 +136,7 @@ export const deleteProduct = async (req: Request, res: Response): Promise<any> =
   try {
     const id = +req.params.id
     const { img_ID } = await productService.findProduct(id) as any
-    img_ID ? await cloudinary.uploader.destroy(img_ID as string) : ''
+    img_ID != null ? await cloudinary.uploader.destroy(img_ID as string) : ''
     await productService.deleteProducts(id)?.then((result) => {
       if (result === 1) {
         res.status(200).send('Product deleted')

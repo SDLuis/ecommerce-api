@@ -37,11 +37,11 @@ export const ownerAccess = (req: Request, res: Response, next: NextFunction): an
     const fullJob = (req as any as CustomRequest).json as any
     const userId = fullUser.User_ID
     const userRole = fullUser.role
-    const jobUserId = fullJob?.dataValues.User_ID
+    const cartUserId = fullJob?.dataValues.User_ID
     if (fullJob === undefined) {
-      throw new Error('Incorret Job ID')
+      throw new Error('Incorret Cart ID')
     } else {
-      const response = policiesService.ownerAccess(userId, jobUserId, userRole)
+      const response = policiesService.ownerAccess(userId, cartUserId, userRole)
       if (response === true) {
         next()
       } else {

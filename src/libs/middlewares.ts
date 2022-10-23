@@ -3,6 +3,7 @@ import cors from 'cors'
 import authRoutes from '../routes/auth.route'
 import userRoutes from '../routes/user.route'
 import productRoutes from '../routes/products.route'
+import cartRouter from '../routes/cart.route'
 import cookieparser from 'cookie-parser'
 import { v2 as cloudinary } from 'cloudinary'
 
@@ -27,6 +28,7 @@ app.use(
 app.use('/users', userRoutes)
 app.use('/auth', authRoutes)
 app.use('/products', productRoutes)
+app.use('/cart', cartRouter)
 app.get('/', (_req, res) => {
   res.status(200).send('WELCOME!!')
 })

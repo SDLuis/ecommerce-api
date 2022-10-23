@@ -1,0 +1,16 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+import { Router } from 'express'
+import * as cartContoller from '../controllers/cart.controller'
+import * as authController from '../controllers/auth.controller'
+import * as policies from '../libs/policies'
+
+const router = Router()
+
+router.get('/', cartContoller.getProducts)
+router.get('/owner', authController.auth, cartContoller.ownProducts)
+router.post('/add', authController.auth, policies.posterAccess, cartContoller.newProduct)
+router.put('/buy/:id', cartContoller.buyProduct)
+router.put('/addingquantity/:id', authController.auth, policies.posterAccess, cartContoller.addingQuantityProduct)
+router.delete('/delete/:id', authController.auth, cartContoller.reqProduct, policies.ownerAccess, cartContoller.deleteProduct)
+
+export default router
