@@ -12,6 +12,6 @@ router.post('/add', authController.auth, policies.posterAccess, cartContoller.ne
 router.put('/buy/:id', cartContoller.buyProduct)
 router.put('/addingquantity/:id', authController.auth, policies.posterAccess, cartContoller.addingQuantityProduct)
 router.delete('/delete/:id', authController.auth, cartContoller.reqProduct, policies.ownerAccess, cartContoller.deleteProduct)
-router.get('/:id', authController.auth, policies.ownerAccess, cartContoller.findProduct)
+router.get('/:id', cartContoller.findProduct)
 
 export default router
