@@ -69,7 +69,20 @@ export const addingQuantityProduct = async (req: Request, res: Response): Promis
     res.status(400).send(e.message)
   }
 }
-
+export const EditQuantityProduct = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const id = +req.params.id
+    const quantity = parseQuantity(req.body.quantity)
+    const response = await cartService.editQtyProducts(id, quantity)
+    if (response === 1) {
+      res.status(200).send({ message: 'Saved change', status: 200 })
+    } else {
+      res.status(200).send({ message: 'Error, not saved change', status: 200 })
+    }
+  } catch (e: any) {
+    res.status(400).send(e.message)
+  }
+}
 export const deleteProduct = async (req: Request, res: Response): Promise<any> => {
   try {
     const id = +req.params.id

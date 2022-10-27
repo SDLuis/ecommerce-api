@@ -60,6 +60,14 @@ export const addingQuantityProducts = async (id: number, QuantityFromRequest: nu
   return +result
 }
 
+export const editQtyProducts = async (id: number, QuantityFromRequest: number): Promise<number> => {
+  const result = await cartModel.update({ quantity: QuantityFromRequest }, { where: { Cart_ID: id } })
+    .then((result) => {
+      return result
+    })
+  return +result
+}
+
 export const deleteProducts = (id: number): Promise<number> | undefined => {
   return cartModel.destroy({ where: { Cart_ID: id } }) as any
 }
