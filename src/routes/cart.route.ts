@@ -2,7 +2,7 @@
 import { Router } from 'express'
 import * as cartContoller from '../controllers/cart.controller'
 import * as authController from '../controllers/auth.controller'
-import HandlePay from '../services/stripe.service'
+import HandlePay, { buySingleItem } from '../services/stripe.service'
 import * as policies from '../libs/policies'
 
 const router = Router()
@@ -10,6 +10,7 @@ const router = Router()
 router.get('/', cartContoller.getProducts)
 router.get('/owner', authController.auth, cartContoller.ownProducts)
 router.post('/stripe', HandlePay)
+router.post('/stripe/single', buySingleItem)
 router.post('/add', authController.auth, cartContoller.newProduct)
 router.put('/buy/:id', cartContoller.buyProduct)
 router.put('/edit/:id', authController.auth, cartContoller.reqProduct, policies.ownerAccess, cartContoller.EditQuantityProduct)
