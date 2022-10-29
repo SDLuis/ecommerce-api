@@ -43,6 +43,7 @@
     "reflect-metadata": "0.1.13",
     "sequelize": "6.25.2",
     "sequelize-typescript": "2.1.5",
+    "stripe": "^10.15.0",
     "uuid": "9.0.0"
   },
   "eslintConfig": {

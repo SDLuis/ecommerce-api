@@ -72,6 +72,10 @@ export const deleteProducts = (id: number): Promise<number> | undefined => {
   return cartModel.destroy({ where: { Cart_ID: id } }) as any
 }
 
+export const clearCart = (id: number): Promise<number> | undefined => {
+  return cartModel.destroy({ where: { User_ID: id } }) as any
+}
+
 export const ownProducts = (id: number): Promise<cartEntry[]> | undefined => {
   return cartModel.findAll({ where: { User_ID: id }, order: [['Cart_ID', 'DESC']] }) as any
 }

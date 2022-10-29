@@ -97,6 +97,21 @@ export const deleteProduct = async (req: Request, res: Response): Promise<any> =
     res.status(400).send(e.message)
   }
 }
+
+export const clearCart = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const id = (req as any).token.User_ID
+    await cartService.clearCart(id)?.then((result) => {
+      if (result === 1) {
+        res.status(200).send('Product(s) deleted')
+      } else {
+        res.status(400).send('Error')
+      }
+    })
+  } catch (e: any) {
+    res.status(400).send(e.message)
+  }
+}
 export const reqProduct = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   try {
     const id = +req.params.id
