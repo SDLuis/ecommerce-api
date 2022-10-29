@@ -45,11 +45,12 @@ export const addUser = async (newUserEntry: NewUserEntry): Promise<NewUserEntry 
 
 export const Login = async (
   authParams: any
-): Promise<string | Error | undefined> => {
+): Promise<any> => {
   try {
     const user = await userModel.findOne({
       where: { email: authParams.email }
     })
+    const role = user?.role
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (user) {
       const validPassword = await bcrypt.compare(
@@ -61,10 +62,14 @@ export const Login = async (
           { id: user.User_ID },
           authConfig.secret,
           {
-            expiresIn: '1h'
+            expiresIn: '2h'
           }
         )
-        return token
+        const res = {
+          token,
+          role
+        }
+        return res
       } else {
         const Error: Error = {
           name: 'Error password',

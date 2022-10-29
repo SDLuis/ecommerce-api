@@ -18,16 +18,16 @@ export const login = async (req: Request, res: Response): Promise<any> => {
   try {
     const paramsToLogin = authValidation.toLogin(req.body)
     const response = await authService.Login(paramsToLogin)
-    if (typeof response === 'string') {
+    if (typeof response === 'object') {
       // WORKINGG!!!!!!!
-      const token = response
+      const token = response.token
       res.cookie('jwt', token, {
         maxAge: 0o1 * 60 * 60 * 1000,
         secure: true,
         httpOnly: true,
         sameSite: 'none'
       })
-      res.status(200).send({ loggedMessage: 'U RE LOGED', data: token })
+      res.status(200).send({ loggedMessage: 'U RE LOGED', data: token, role: response.role })
     } else {
       return response !== undefined
         ? res.send(response)
