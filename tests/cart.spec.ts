@@ -27,17 +27,17 @@ test('Api show cart entry', async () => {
 })
 
 test('Search product in cart by ID', async () => {
-  const ID: number = 18
-  const productName: string = 'Beats Electron'
+  const ID: number = 52
+  const productName: string = 'Beats FF WHITE'
   const product = await context.get(`/cart/${ID}`)
 
   expect(product.ok()).toBeTruthy()
-  expect(await product.json()).toHaveProperty('Product_ID', 1)
+  expect(await product.json()).toHaveProperty('Product_ID', 8)
   expect(await product.json()).toHaveProperty('Product_Name', productName)
 })
 
 test('Buy products in cart', async () => {
-  const ID: number = 18
+  const ID: number = 52
   const product = await context.get(`/cart/${ID}`)
   const getProducts = await product.text()
   const getQuantity = JSON.parse(getProducts).quantity
@@ -110,7 +110,7 @@ test.describe('need auth', () => {
   })
 
   test('Add quantity products in cart', async ({ request }) => {
-    const ID: number = 18
+    const ID: number = 52
     const product = await request.get(`http://localhost:5000/cart/${ID}`)
     const getProducts = await product.text()
     const getQuantity = JSON.parse(getProducts).quantity
